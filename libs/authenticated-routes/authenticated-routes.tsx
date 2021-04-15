@@ -1,6 +1,5 @@
 import React from 'react';
 
-import './authenticated-routes.module.scss';
 import { useIdentity } from '../netlify-identity-provider/identity-context';
 import { getChildrenOrFunction } from './utilities';
 
