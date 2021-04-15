@@ -1,4 +1,3 @@
-import './unauthenticated-routes.module.scss';
 import React from 'react';
 import { useIdentity } from '../netlify-identity-provider/identity-context';
 
