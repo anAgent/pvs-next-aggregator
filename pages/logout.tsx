@@ -1,19 +1,19 @@
 import React from 'react';
-import { useIdentity } from '../libs/netlify-identity-provider';
+import { Button, Card } from 'react-bootstrap';
+import { useRouter } from 'next/router';
 
 const Logout = () => {
-  const { login } = useIdentity();
-
+  const router = useRouter();
   return (
-    <div>
-      <button
-        onClick={async () => {
-          await login('aaron.moline@outlook.com', 'Foobar234$', true);
-          window.location.assign('/');
-        }}
-      >
-        Log in here.
-      </button>
+    <div className="container">
+      <Card>
+        <Card.Header>Logged out</Card.Header>
+        <Card.Body>
+          <Button variant="primary" onClick={() => router.push('/')}>
+            Click here to login
+          </Button>
+        </Card.Body>
+      </Card>
     </div>
   );
 };

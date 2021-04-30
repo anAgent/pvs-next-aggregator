@@ -5,7 +5,7 @@ export interface IdentityContextState {
     username: string,
     password: string,
     rememberMe: boolean
-  ) => Promise<User>;
+  ) => Promise<User | { error: string }>;
   user: User;
   confirm: (token: string, remember?: boolean) => Promise<User>;
   acceptInvite: (

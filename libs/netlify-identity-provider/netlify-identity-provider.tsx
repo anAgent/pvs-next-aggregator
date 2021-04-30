@@ -25,14 +25,18 @@ const buildIdentityContext = (
       username: string,
       password: string,
       rememberMe: boolean
-    ): Promise<User> => {
+    ): Promise<User | { error: string }> => {
       status(true);
       return await identity
         .login(username, password, rememberMe)
         .then((user) => {
-          status(false);
-          window.location.assign('/');
           return user;
+        })
+        .finally(() => status(false))
+        .catch((e) => {
+          return {
+            error: e.message,
+          };
         });
     },
     signup: async (
@@ -109,18 +113,17 @@ export const NetlifyIdentityProvider: React.FC<NetlifyIdentityProviderProps> = (
   }, []);
 
   React.useEffect(() => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-
     const timeout = (userIdentity.expiresIn - 1) * 60 * 1000;
-
     console.log(`Setting timout for ${timeout} milliseconds`);
 
     if (timeout > 0) {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+
       const id = setTimeout(() => {
         if (user?.logout) {
-          user.logout().then(() => (window.location.href = '/'));
+          user.logout();
         }
       }, timeout);
 

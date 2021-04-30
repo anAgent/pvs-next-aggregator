@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AuthenticatedRoutes from '../libs/authenticated-routes/authenticated-routes';
@@ -8,6 +9,8 @@ import { UiFileInputButton } from '../components/UiFileInputButton';
 
 import axios, { AxiosRequestConfig } from 'axios';
 import { ApiResponse } from '../libs/interfaces';
+import LoginForm from '../components/LoginForm';
+import { Col, Container, Row } from 'react-bootstrap';
 
 /////////////
 export const uploadFileRequest = async (
@@ -24,8 +27,8 @@ export const uploadFileRequest = async (
   return response.data;
 };
 /////////////
+
 export default function Home() {
-  const { login, user } = useIdentity();
   // @ts-ignore
   const onChange = async (formData: any) => {
     const response = await uploadFileRequest(formData, (event: any) => {
@@ -38,13 +41,16 @@ export default function Home() {
     console.log('response', response);
   };
 
+  const { user } = useIdentity();
+
   return (
-    <div className="container">
+    <Container>
       <AuthenticatedRoutes>
         <Head>
           <title>Sweet</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
+
         <main>
           <Header title="Welcome to my app!" />
           <button
@@ -64,14 +70,12 @@ export default function Home() {
         <Footer />
       </AuthenticatedRoutes>
       <UnauthenticatedRoutes>
-        <button
-          onClick={async () =>
-            await login('aaron.moline@outlook.com', 'Foobar234$', true)
-          }
-        >
-          Log in here.
-        </button>
+        <Row className="justify-content-md-center mt-5">
+          <Col lg={4}>
+            <LoginForm />
+          </Col>
+        </Row>
       </UnauthenticatedRoutes>
-    </div>
+    </Container>
   );
 }
